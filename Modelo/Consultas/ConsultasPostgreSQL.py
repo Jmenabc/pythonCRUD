@@ -1,6 +1,6 @@
 import Modelo.Utils
 import psycopg2
-from Modelo.DAO.Usuario import Usuario
+
 """
 Clase que contiene todas las consultas SQL
 @author Jmenabc
@@ -13,20 +13,22 @@ class ConsultasPostgreSQL:
             print("[Modelo-Consultas-ConsultasPostgreSQL-listarUsuario]: Haciendo conexion a base de datos")
 
             con = psycopg2.connect(
-                Modelo.Utils.ConexionPostgreSQL.HOST,
-                Modelo.Utils.ConexionPostgreSQL.DATABASE,
-                Modelo.Utils.ConexionPostgreSQL.USER,
-                Modelo.Utils.ConexionPostgreSQL.PASSWORD,
-                Modelo.Utils.ConexionPostgreSQL.PORT
+                host="localhost",
+                database="python",
+                user="postgres",
+                password="root",
+                port=5432
             )
             consulta = 'SELECT * FROM holamundo.Usuario'
+            print("[Modelo-Consultas-ConsultasPostgreSQL-listarUsuario]: Abriendo conexion")
             cur = con.cursor()
             print("[Modelo-Consultas-ConsultasPostgreSQL-listarUsuario]: Ejecutamos la consulta")
-            consultaEjecutada = cur.execute(consulta)
-            for row in consultaEjecutada.fetchall():
+            cur.execute(consulta)
+            consultaEjecutada = cur.fetchall()
+            for row in consultaEjecutada:
                 print(row[0], row[1])
             print("[Modelo-Consultas-ConsultasPostgreSQL-listarUsuario]: Cerrando conexion a la base de datos")
             con.close()
 
         except Exception as error:
-            print("[Modelo-Consultas-ConsultasPostgreSQL-listarUsuario]:" + error)
+            print("[Modelo-Consultas-ConsultasPostgreSQL-listarUsuario]:", error)
